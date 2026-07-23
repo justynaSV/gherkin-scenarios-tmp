@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "ignoreDeprecations": "6.0",
+    "target": "ES2022"
+  },
+  "exclude": ["node_modules", "reports", "test-results"],
+  "typeAcquisition": {
+    "enable": true
+  }
+}

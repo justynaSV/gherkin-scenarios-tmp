@@ -1,0 +1,33 @@
+@<feature-name>
+Feature: <Feature title>
+  As a <role>
+  I want <capability>
+  So that <business value>
+
+  Background:
+    Given <shared precondition>
+
+  # Acceptance criterion: <criterion summary>
+  @smoke @regression
+  Scenario: <Happy path title>
+    Given <initial context>
+    When <user action>
+    Then <expected observable result>
+
+  # Acceptance criterion: <criterion summary>
+  @regression
+  Scenario: <Negative or edge case title>
+    Given <initial context>
+    When <user action>
+    Then <expected observable result>
+
+  # Acceptance criterion: <criterion summary>
+  @regression
+  Scenario Outline: <Data-driven behavior title>
+    Given <initial context with "<input>">
+    When <action is performed>
+    Then <expected result is "<result>">
+
+    Examples:
+      | input | result |
+      | value | output |

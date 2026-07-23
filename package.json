@@ -1,0 +1,27 @@
+{
+  "name": "gherkin-scenarios",
+  "version": "1.0.0",
+  "description": "Framework for creating and validating Gherkin test scenarios from user stories.",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "bdd": "cucumber-js",
+    "bdd:dry-run": "cucumber-js --profile dry",
+    "bdd:regression": "cucumber-js --profile regression",
+    "bdd:smoke": "cucumber-js --profile smoke",
+    "lint": "npm run lint:gherkin && npm run lint:language && npm run lint:steps && npm run lint:traceability",
+    "lint:gherkin": "node scripts/check-gherkin-lint.js",
+    "lint:language": "node scripts/check-feature-language.js",
+    "lint:steps": "node scripts/check-duplicate-steps.js",
+    "lint:traceability": "node scripts/check-traceability.js",
+    "validate": "npm run lint"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^13.0.0",
+    "@types/node": "^26.0.1",
+    "gherkin-lint": "^4.2.4"
+  }
+}

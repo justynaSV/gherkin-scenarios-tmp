@@ -1,0 +1,95 @@
+---
+description: "Generate Gherkin .feature file from a user story. Use when: creating test scenarios, writing Cucumber scenarios, converting user stories to BDD, writing acceptance criteria in Gherkin."
+name: "Gherkin Scenarios"
+argument-hint: "Paste your user story here..."
+agent: "agent"
+---
+
+Generate a Gherkin `.feature` file based on the following user story:
+
+```
+$args
+```
+
+Prefer collecting the story in the structure from `templates/user-story-paste.template.txt`:
+
+- Story: AS A, I WANT, TO
+- Business context & logic
+- Business process flow
+- Acceptance criteria
+
+If any of these sections are missing, unclear, or too thin to generate useful scenarios, ask concise follow-up questions for the missing parts before generating the `.feature` file. Do not force exact headings or capitalization when the pasted story already contains equivalent information.
+
+## Rules
+
+1. **Language**: Write all Gherkin content in the same language as the user story.
+2. **Structure**: Use standard Gherkin keywords (`Feature`, `Scenario`, `Background`, `Scenario Outline`, `Examples`, `Given`, `When`, `Then`, `And`, `But`).
+3. **Scenarios**:
+   - Cover the **happy path** first.
+   - Cover **edge cases** and **negative/error paths** relevant to the story.
+  - Cover validation rules, permissions, empty states, boundary values, and external service failures when relevant.
+   - Use `Scenario Outline` + `Examples` table when multiple similar cases differ only in data.
+   - Use `Background` when multiple scenarios share identical setup steps.
+4. **Traceability**: Add a short comment before each scenario group that maps it to a user-story acceptance criterion when acceptance criteria are provided.
+5. **Step granularity**: Each step should describe **one action or one assertion** — avoid compound steps.
+6. **Quality rules**:
+  - Prefer observable behavior over implementation details.
+  - Avoid vague assertions like "the system works" or "the page is correct".
+  - Avoid UI selectors, CSS classes, database names, and automation details.
+  - Use realistic but safe test data. Do not include real passwords, tokens, or personal data.
+  - If the user story is ambiguous after follow-up questions, list assumptions before the feature file.
+7. **Tagging strategy**:
+   - Tag every `Feature` with `@<feature-name>` (kebab-case).
+   - Tag the happy-path scenario(s) with `@smoke`.
+   - Tag all scenarios with `@regression`.
+  - Add any domain-specific tags (e.g. `@ui`, `@api`, `@security`, `@accessibility`, `@performance`) when clearly applicable.
+  - Add `@translations` to scenarios that validate localized names, labels, tooltips, or messages. Use a `Scenario Outline` with `jezyk` and `tlumaczenie` examples so the structure stays consistent across features:
+
+```gherkin
+  @translations
+  Scenario Outline: Wyświetlenie poprawnego tłumaczenia nazwy <elementu> w zależności od języka
+    Given <element> jest widoczny dla użytkownika
+    And użytkownik ma ustawiony język interfejsu "<jezyk>"
+    When użytkownik wyświetla tekst <elementu>
+    Then użytkownik widzi nazwę <elementu> "<tlumaczenie>"
+
+    Examples:
+      | jezyk | tlumaczenie      |
+      | pl-PL | <polski tekst>   |
+      | en    | <angielski tekst> |
+      | cz    | <czeski tekst>   |
+```
+8. **File location**:
+  - Suggest a target path under `features/`, not only a file name.
+  - If the user names an existing module folder, use it, for example `features/<module-folder>/<kebab-case-name>.feature`.
+  - If the user asks for a new module folder, suggest that new folder under `features/` and create it only after save confirmation.
+  - If no target folder is provided, ask where to save the feature before creating the file. Offer `features/`, any clearly relevant existing subfolder, and an option to provide a new folder name.
+9. **File naming**: Suggest a file name in `kebab-case.feature` format at the top of your response.
+10. **Save confirmation**: After generating the full feature content, ask the user whether the suggested `.feature` file should be created and saved at the exact suggested path. Do not create folders or save the file unless the user confirms.
+
+## Output format
+
+First output assumptions when needed, then the suggested path as a comment, then the full `.feature` file content. After the code block, ask: `Should I create and save this file at <features/path>/<kebab-case-name>.feature?`
+
+```gherkin
+# Suggested path: features/<optional-module-folder>/<kebab-case-name>.feature
+
+@<feature-tag>
+Feature: <Feature title>
+  <Optional: one-line description>
+
+  Background: (if applicable)
+    Given ...
+
+  @smoke @regression
+  Scenario: <Happy path title>
+    Given ...
+    When ...
+    Then ...
+
+  @regression
+  Scenario: <Edge/negative case title>
+    Given ...
+    When ...
+    Then ...
+```

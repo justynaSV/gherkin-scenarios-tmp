@@ -1,0 +1,19 @@
+As a <role>
+I want <capability>
+So that <business value>
+
+Acceptance criteria:
+- Given <context>, when <action>, then <expected result>
+- Given <context>, when <alternative action>, then <expected result>
+
+Business rules:
+- <rule that affects behavior or validation>
+
+Test data:
+- <safe example data needed for scenarios>
+
+Out of scope:
+- <known exclusions that should not be tested in this feature>
+
+Questions / assumptions:
+- <anything unclear that needs confirmation>

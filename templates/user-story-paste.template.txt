@@ -1,0 +1,28 @@
+Story
+
+AS A <role or user type>
+I WANT <capability or action>
+TO <business outcome or user value>
+
+Business context & logic
+
+- <why this story matters to the business or user>
+- <business rule, policy, calculation, validation, or constraint>
+- <important dependency, assumption, or exception>
+
+Business process flow
+
+1. <starting context or trigger>
+2. <main user or system action>
+3. <decision point, validation, or alternate path>
+4. <expected process outcome>
+
+Acceptance criteria
+
+- Given <context>, when <action>, then <expected result>
+- Given <context>, when <alternative action>, then <expected result>
+- Given <error or edge case>, when <action>, then <expected result>
+
+Questions / assumptions
+
+- <anything unclear that needs confirmation before scenarios are generated>
