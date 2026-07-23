@@ -2,11 +2,29 @@
 
 Reusable template for creating project-specific Gherkin scenario repositories.
 
-Use this repository as a clean starting point for QA teams that want a consistent Copilot prompt, scenario templates, validation scripts, traceability format, and Cucumber.js structure without carrying examples from another product.
+Use this repository when a QA team needs a clean starting point for writing scenarios from user stories, validating `.feature` files, tracking traceability, and later adding executable Cucumber.js step definitions.
 
-## What is included
+## Start Here
 
-- A reusable Copilot prompt for generating `.feature` files from pasted user stories.
+If you are setting up a new QA project, start with `docs/getting-started.md`.
+
+That guide walks through the full process:
+
+1. Create or import a project repository from this template.
+2. Open the project in VS Code.
+3. Install dependencies.
+4. Customize the prompt and project settings.
+5. Paste a user story into Copilot Chat.
+6. Generate and save a `.feature` file.
+7. Update traceability.
+8. Add step definitions.
+9. Run validation and Cucumber checks.
+10. Commit and open a pull request.
+
+## What This Template Gives You
+
+- A Copilot prompt for generating Gherkin `.feature` files from pasted user stories.
+- A guided workflow document in `docs/getting-started.md`.
 - User story and feature templates in `templates/`.
 - JavaScript and TypeScript step definition templates in `templates/step-definitions/`.
 - Minimal Cucumber.js support files under `features/support/`.
@@ -16,27 +34,76 @@ Use this repository as a clean starting point for QA teams that want a consisten
 - A tag glossary in `docs/tags.md`.
 - GitHub Actions validation for pull requests and pushes to `main`.
 
-## Create a project repository from this template
+## Repository Layout
+
+```text
+.github/
+  prompts/
+    gherkin-scenarios.prompt.md
+  workflows/
+    validate-features.yml
+
+docs/
+  getting-started.md
+  running-bdd.md
+  tags.md
+  traceability.md
+
+features/
+  step_definitions/
+  support/
+
+templates/
+  feature.template
+  user-story-paste.template.txt
+  user-story.template.txt
+  step-definitions/
+
+scripts/
+  check-duplicate-steps.js
+  check-feature-language.js
+  check-gherkin-lint.js
+  check-traceability.js
+```
+
+## Create a Project Repository
+
+For the full workflow, use `docs/getting-started.md`.
+
+Short version:
 
 1. Create a new repository from this template.
 2. Rename the package in `package.json`.
 3. Rename `.github/prompts/gherkin-scenarios.prompt.md` if the project needs its own slash command.
 4. Add project-specific rules to the prompt.
 5. Update `.env.example` with safe placeholder URLs for the project.
-6. Add project-specific feature files under `features/`.
-7. Add project-specific step definitions under `features/step_definitions/` when scenarios become executable.
+6. Add feature files under `features/`.
+7. Add step definitions under `features/step_definitions/` when scenarios become executable.
 8. Keep `docs/traceability.md` updated whenever scenarios are added, renamed, or removed.
 
-## How to use the prompt
+## Use The Copilot Prompt
 
 1. Open Copilot Chat in VS Code.
-2. Type `/gherkin-scenarios`.
-3. Paste a user story, or start with only the parts you know.
-4. Answer any follow-up questions about business context, process flow, business rules, or acceptance criteria.
+2. Type:
+
+```text
+/gherkin-scenarios
+```
+
+3. Paste a user story below the command.
+4. Answer follow-up questions about business context, process flow, business rules, or acceptance criteria.
 5. Review the generated assumptions, tags, scenarios, and suggested save path.
 6. Confirm the exact path before Copilot creates folders or saves the `.feature` file.
 
-## Recommended user story format
+The prompt asks where to save a feature when no target folder is clear. Feature files should live under `features/`, for example:
+
+```text
+features/login/password-reset.feature
+features/orders/order-cancellation.feature
+features/calendar/appointment-rescheduling.feature
+```
+
+## Recommended User Story Format
 
 You can start from `templates/user-story.template.txt`, or use `templates/user-story-paste.template.txt` when pasting a fuller story into the `/gherkin-scenarios` prompt.
 
@@ -56,7 +123,7 @@ Out of scope:
 - ...
 ```
 
-## Scenario writing checklist
+## Scenario Writing Checklist
 
 - Start with the main happy path.
 - Add negative paths, validation errors, permissions, boundary values, and empty states.
@@ -67,7 +134,7 @@ Out of scope:
 - Avoid implementation details such as CSS selectors, database tables, or framework methods.
 - Use safe example data and never include real credentials, tokens, or personal data.
 
-## Default tags
+## Default Tags
 
 - `@<feature-name>` on each feature, using kebab-case.
 - `@smoke` on the core happy-path scenario.
@@ -95,7 +162,17 @@ Validation includes:
 
 The template validates successfully with no feature files. Once a project adds scenarios, the same validation checks the real project content.
 
-## Running BDD scenarios
+## Step Definitions
+
+Feature files can start as reviewable BDD documentation. When the project is ready to automate them, add step definitions under:
+
+```text
+features/step_definitions/
+```
+
+Use the templates in `templates/step-definitions/` as a starting point. The detailed workflow is in `docs/getting-started.md`.
+
+## Running BDD Scenarios
 
 Use `docs/running-bdd.md` for the execution guide. The main commands are:
 
