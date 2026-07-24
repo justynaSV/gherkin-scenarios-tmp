@@ -12,7 +12,7 @@ That guide walks through the full process:
 
 1. Create or import a project repository from this template.
 2. Open the project in VS Code.
-3. Install dependencies.
+3. Run first validation.
 4. Customize the prompt and project settings.
 5. Paste a user story into Copilot Chat.
 6. Generate and save a `.feature` file.
@@ -29,7 +29,7 @@ That guide walks through the full process:
 - JavaScript and TypeScript step definition templates in `templates/step-definitions/`.
 - Minimal Cucumber.js support files under `features/support/`.
 - Empty starter folders for project feature files and step definitions.
-- Gherkin linting, language validation, duplicate-step detection, and traceability checks.
+- Built-in Gherkin style validation, language validation, duplicate-step detection, and traceability checks.
 - A traceability matrix template in `docs/traceability.md`.
 - A tag glossary in `docs/tags.md`.
 - GitHub Actions validation for pull requests and pushes to `main`.
@@ -62,7 +62,7 @@ templates/
 scripts/
   check-duplicate-steps.js
   check-feature-language.js
-  check-gherkin-lint.js
+  check-gherkin-style.js
   check-traceability.js
 ```
 
@@ -78,7 +78,7 @@ Short version:
 4. Add project-specific rules to the prompt.
 5. Update `.env.example` with safe placeholder URLs for the project.
 6. Add feature files under `features/`.
-7. Add step definitions under `features/step_definitions/` when scenarios become executable.
+7. For every new module folder under `features/`, create a matching step-definition file under `features/step_definitions/`.
 8. Keep `docs/traceability.md` updated whenever scenarios are added, renamed, or removed.
 
 ## Use The Copilot Prompt
@@ -101,6 +101,14 @@ The prompt asks where to save a feature when no target folder is clear. Feature 
 features/login/password-reset.feature
 features/orders/order-cancellation.feature
 features/calendar/appointment-rescheduling.feature
+```
+
+Each first-level folder under `features/` is treated as a separate module. When the prompt creates a new module folder such as `features/orders/`, it should also create `features/step_definitions/orders.steps.js`.
+
+You can create the module folder and matching step-definition scaffold manually with:
+
+```sh
+npm run create:module -- orders
 ```
 
 ## Recommended User Story Format
@@ -146,16 +154,17 @@ Out of scope:
 
 Use Node.js 22.12.0 or newer. The GitHub Actions workflow runs on Node 22.
 
-Install dependencies and run validation before committing feature changes:
+Run validation before committing feature changes:
 
 ```sh
-npm install
 npm run validate
 ```
 
+Validation is self-contained and does not require `npm install`. This keeps the first run simple for QA users and avoids missing local command shims from external packages.
+
 Validation includes:
 
-- Gherkin formatting and naming rules from `.gherkin-lintrc`.
+- Built-in Gherkin style and naming rules.
 - Feature-language checks for Polish and English scenario text.
 - Duplicate-step detection inside individual scenarios.
 - Traceability coverage checks from `docs/traceability.md`.
@@ -172,9 +181,20 @@ features/step_definitions/
 
 Use the templates in `templates/step-definitions/` as a starting point. The detailed workflow is in `docs/getting-started.md`.
 
+Module convention:
+
+- `features/orders/` -> `features/step_definitions/orders.steps.js`
+- `features/password-reset/` -> `features/step_definitions/password-reset.steps.js`
+
 ## Running BDD Scenarios
 
 Use `docs/running-bdd.md` for the execution guide. The main commands are:
+
+Install dependencies before running Cucumber commands:
+
+```sh
+npm install
+```
 
 ```sh
 npm run bdd:dry-run

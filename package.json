@@ -12,8 +12,9 @@
     "bdd:dry-run": "cucumber-js --profile dry",
     "bdd:regression": "cucumber-js --profile regression",
     "bdd:smoke": "cucumber-js --profile smoke",
+    "create:module": "node scripts/create-module.js",
     "lint": "npm run lint:gherkin && npm run lint:language && npm run lint:steps && npm run lint:traceability",
-    "lint:gherkin": "node scripts/check-gherkin-lint.js",
+    "lint:gherkin": "node scripts/check-gherkin-style.js",
     "lint:language": "node scripts/check-feature-language.js",
     "lint:steps": "node scripts/check-duplicate-steps.js",
     "lint:traceability": "node scripts/check-traceability.js",
@@ -21,7 +22,6 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^13.0.0",
-    "@types/node": "^26.0.1",
-    "gherkin-lint": "^4.2.4"
+    "@types/node": "^26.0.1"
   }
 }

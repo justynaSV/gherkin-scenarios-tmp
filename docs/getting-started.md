@@ -65,16 +65,21 @@ After renaming, use the matching command in Copilot Chat:
 /my-project
 ```
 
-## 3. Install dependencies
+## 3. Run first validation
 
 Use Node.js 22.12.0 or newer.
 
 ```sh
-npm install
 npm run validate
 ```
 
-The template validates successfully before any feature files are added. After the team adds scenarios, the same command checks the real project content.
+Validation is self-contained and does not require `npm install`. The template validates successfully before any feature files are added. After the team adds scenarios, the same command checks the real project content.
+
+Install dependencies only when you want to run Cucumber commands such as `npm run bdd:dry-run`, `npm run bdd:smoke`, or `npm run bdd`:
+
+```sh
+npm install
+```
 
 ## 4. Customize the template for the project
 
@@ -146,6 +151,19 @@ features/orders/order-cancellation.feature
 features/calendar/appointment-rescheduling.feature
 ```
 
+Each first-level folder under `features/` is treated as a separate module. When a new module folder is created, create a matching step-definition file using the same module name:
+
+```text
+features/orders/order-cancellation.feature
+features/step_definitions/orders.steps.js
+```
+
+The Copilot prompt is configured to create that step-definition file when it creates a new module folder. You can also create both manually:
+
+```sh
+npm run create:module -- orders
+```
+
 ## 7. Update traceability
 
 Every scenario should be mapped in `docs/traceability.md`.
@@ -174,7 +192,7 @@ Create step definition files under:
 features/step_definitions/
 ```
 
-Use a feature or domain name in the file name:
+Use the module name in the file name:
 
 ```text
 features/step_definitions/login.steps.js
@@ -261,6 +279,7 @@ Before committing, run:
 
 ```sh
 npm run validate
+npm install
 npm run bdd:dry-run
 ```
 
@@ -282,6 +301,6 @@ Open a pull request for review. The CI workflow validates feature files and trac
 4. Update traceability.
 5. Run `npm run validate`.
 6. Add step definitions when automation is needed.
-7. Run `npm run bdd:dry-run`.
+7. Run `npm install` and `npm run bdd:dry-run`.
 8. Run tagged executable scenarios when project support code is ready.
 9. Commit and open a pull request.

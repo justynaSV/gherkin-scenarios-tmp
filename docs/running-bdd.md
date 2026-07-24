@@ -13,18 +13,19 @@ npm run validate
 
 This runs:
 
-- Gherkin linting when `.feature` files exist.
+- Built-in Gherkin style validation when `.feature` files exist.
 - Feature-language validation.
 - Duplicate-step detection inside scenarios.
 - Traceability coverage checks.
 
-The template passes validation before any project-specific feature files are added.
+The template passes validation before any project-specific feature files are added. This validation is self-contained and does not require `npm install`.
 
 ## Dry run
 
 After adding feature files and step definitions, use a Cucumber dry run to catch undefined steps:
 
 ```sh
+npm install
 npm run bdd:dry-run
 ```
 

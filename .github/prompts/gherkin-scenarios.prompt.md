@@ -62,14 +62,16 @@ If any of these sections are missing, unclear, or too thin to generate useful sc
 8. **File location**:
   - Suggest a target path under `features/`, not only a file name.
   - If the user names an existing module folder, use it, for example `features/<module-folder>/<kebab-case-name>.feature`.
-  - If the user asks for a new module folder, suggest that new folder under `features/` and create it only after save confirmation.
+  - If the user asks for a new module folder, treat that folder as a separate feature module. Suggest the new folder under `features/` and create it only after save confirmation.
+  - When creating a new module folder under `features/`, also create a matching step-definition file at `features/step_definitions/<module-folder>.steps.js` if it does not already exist.
+  - The generated step-definition file should contain a minimal Cucumber.js scaffold with `Given`, `When`, `Then`, and a short TODO comment for project-specific automation.
   - If no target folder is provided, ask where to save the feature before creating the file. Offer `features/`, any clearly relevant existing subfolder, and an option to provide a new folder name.
 9. **File naming**: Suggest a file name in `kebab-case.feature` format at the top of your response.
-10. **Save confirmation**: After generating the full feature content, ask the user whether the suggested `.feature` file should be created and saved at the exact suggested path. Do not create folders or save the file unless the user confirms.
+10. **Save confirmation**: After generating the full feature content, ask the user whether the suggested `.feature` file should be created and saved at the exact suggested path. If the path creates a new module folder, mention the matching step-definition file that will also be created. Do not create folders, feature files, or step-definition files unless the user confirms.
 
 ## Output format
 
-First output assumptions when needed, then the suggested path as a comment, then the full `.feature` file content. After the code block, ask: `Should I create and save this file at <features/path>/<kebab-case-name>.feature?`
+First output assumptions when needed, then the suggested path as a comment, then the full `.feature` file content. After the code block, ask: `Should I create and save this file at <features/path>/<kebab-case-name>.feature?` If this creates a new module folder, add: `I will also create <features/step_definitions/module-folder.steps.js> for this module.`
 
 ```gherkin
 # Suggested path: features/<optional-module-folder>/<kebab-case-name>.feature
