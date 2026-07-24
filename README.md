@@ -64,6 +64,7 @@ scripts/
   check-feature-language.js
   check-gherkin-style.js
   check-traceability.js
+  create-module.js
 ```
 
 ## Create a Project Repository
@@ -103,13 +104,15 @@ features/orders/order-cancellation.feature
 features/calendar/appointment-rescheduling.feature
 ```
 
-Each first-level folder under `features/` is treated as a separate module. When the prompt creates a new module folder such as `features/orders/`, it should also create `features/step_definitions/orders.steps.js`.
+Each first-level folder under `features/` is treated as a separate module. When the prompt creates a new module folder such as `features/orders/`, it also runs `npm run create:module -- orders` to generate `features/step_definitions/orders.steps.js`.
 
 You can create the module folder and matching step-definition scaffold manually with:
 
 ```sh
 npm run create:module -- orders
 ```
+
+This parses every `.feature` file already in `features/orders/` and generates stub functions in `features/step_definitions/orders.steps.js` using the real Gherkin step text as the Cucumber Expression (not generic placeholders). Steps that already exist in the file are left untouched; only missing ones are appended, so re-running it after editing a feature is safe.
 
 ## Recommended User Story Format
 

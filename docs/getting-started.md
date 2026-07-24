@@ -151,18 +151,15 @@ features/orders/order-cancellation.feature
 features/calendar/appointment-rescheduling.feature
 ```
 
-Each first-level folder under `features/` is treated as a separate module. When a new module folder is created, create a matching step-definition file using the same module name:
-
-```text
-features/orders/order-cancellation.feature
-features/step_definitions/orders.steps.js
-```
-
-The Copilot prompt is configured to create that step-definition file when it creates a new module folder. You can also create both manually:
+Each first-level folder under `features/` is treated as a separate module. After adding or updating `.feature` files in a module folder, generate the matching step-definition file with:
 
 ```sh
 npm run create:module -- orders
 ```
+
+This creates `features/orders/` (if it does not exist yet) and generates `features/step_definitions/orders.steps.js` with one stub per **unique step actually used in that module's feature files** (converted to a Cucumber Expression, e.g. `{string}`/`{int}` placeholders) — not generic placeholder text. Re-run the same command after editing a feature file; it only appends the steps that are still missing, so it never overwrites work you've already implemented.
+
+The Copilot prompt is configured to run `npm run create:module -- <module-folder>` automatically after saving a feature file in a new module folder.
 
 ## 7. Update traceability
 
@@ -259,7 +256,7 @@ After adding feature files, run a dry run:
 npm run bdd:dry-run
 ```
 
-If Cucumber reports undefined steps, add or adjust files in `features/step_definitions/` until every Gherkin step is connected to code.
+If Cucumber reports undefined steps, run `npm run create:module -- <module-folder>` to generate stubs for them, then implement the `TODO` bodies (they return `'pending'` until you do) in `features/step_definitions/`.
 
 ## 11. Run scenarios
 
