@@ -45,7 +45,15 @@ git push -u origin main
 1. Open VS Code.
 2. Choose **File > Open Folder**.
 3. Select the cloned project folder.
-4. Open Copilot Chat.
+4. When VS Code shows a prompt to install the recommended extensions, click **Install All**. Otherwise, install them manually (see below).
+5. Open Copilot Chat.
+
+### Required and recommended extensions
+
+- **GitHub Copilot Chat** (`GitHub.copilot-chat`) — required to run the `/gherkin-scenarios` prompt.
+- **Cucumber (Gherkin) Full Support** (`alexkrechik.cucumberautocomplete`) — required for `.feature` file syntax highlighting, step autocompletion, and jumping from a Gherkin step to its step definition. The repository's `.vscode/settings.json` already configures `cucumberautocomplete.steps` and `cucumberautocomplete.syncfeatures` for this extension.
+
+These extensions are listed in `.vscode/extensions.json`, so VS Code recommends them automatically when the folder is opened.
 
 The prompt file lives at `.github/prompts/gherkin-scenarios.prompt.md`. In Copilot Chat, it is available as:
 
