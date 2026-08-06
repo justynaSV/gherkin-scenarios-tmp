@@ -51,7 +51,7 @@ git push -u origin main
 ### Required and recommended extensions
 
 - **GitHub Copilot Chat** (`GitHub.copilot-chat`) — required to run the `/gherkin-scenarios` prompt.
-- **Cucumber (Gherkin) Full Support** (`alexkrechik.cucumberautocomplete`) — required for `.feature` file syntax highlighting, step autocompletion, and jumping from a Gherkin step to its step definition. The repository's `.vscode/settings.json` already configures `cucumberautocomplete.steps` and `cucumberautocomplete.syncfeatures` for this extension.
+- **Cucumber** (`CucumberOpen.cucumber-official`) — required for `.feature` file syntax highlighting, step autocompletion, and jumping from a Gherkin step to its step definition. The repository's `.vscode/settings.json` already configures `cucumber.glue` and `cucumber.features` for this extension.
 
 These extensions are listed in `.vscode/extensions.json`, so VS Code recommends them automatically when the folder is opened.
 
