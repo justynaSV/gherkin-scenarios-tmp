@@ -1,7 +1,7 @@
 ---
 description: "Generate Gherkin .feature file from a user story. Use when: creating test scenarios, writing Cucumber scenarios, converting user stories to BDD, writing acceptance criteria in Gherkin."
 name: "Gherkin Scenarios"
-argument-hint: "Paste your user story here..."
+argument-hint: "Paste your user story, or a Jira epic/story link or key..."
 agent: "agent"
 ---
 
@@ -10,6 +10,15 @@ Generate a Gherkin `.feature` file based on the following user story:
 ```
 $args
 ```
+
+## Jira input
+
+If `$args` is a Jira issue URL (e.g. `https://<site>.atlassian.net/browse/<KEY>`) or a bare issue key (e.g. `PROJ-123`), use the Atlassian MCP tools to fetch that epic/story instead of asking the user to paste it:
+
+- Fetch the summary, description, and any acceptance-criteria fields, plus linked sub-tasks if the issue is an epic.
+- Map the fetched fields onto the Story/Business context/Acceptance criteria structure below.
+- If the Atlassian MCP tools are unavailable or the fetch fails, tell the user and ask them to paste the story text instead.
+- Still ask follow-up questions if the fetched content is missing required sections.
 
 Prefer collecting the story in the structure from `templates/user-story-paste.template.txt`:
 
