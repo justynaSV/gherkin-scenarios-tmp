@@ -76,11 +76,11 @@ If any of these sections are missing, unclear, or too thin to generate useful sc
   - That script parses the module's `.feature` files and generates one step stub per unique step (using the real Gherkin step text as a Cucumber Expression), instead of generic placeholder steps. It only appends steps that are still missing, so it is safe to re-run after every change.
   - If no target folder is provided, ask where to save the feature before creating the file. Offer `features/`, any clearly relevant existing subfolder, and an option to provide a new folder name.
 9. **File naming**: Suggest a file name in `kebab-case.feature` format at the top of your response.
-10. **Save confirmation**: After generating the full feature content, ask the user whether the suggested `.feature` file should be created and saved at the exact suggested path. If the path creates a new module folder, mention that `npm run create:module -- <module-folder>` will also be run to generate matching step definitions. Do not create folders, feature files, or step-definition files unless the user confirms.
+10. **Save confirmation**: After generating the full feature content, use the `vscode_askQuestions` tool (not a plain chat question) to ask for confirmation with Yes/No options, so the user can click a button instead of typing. If the path creates a new module folder, mention that `npm run create:module -- <module-folder>` will also be run to generate matching step definitions. Do not create folders, feature files, or step-definition files unless the user confirms with "Yes".
 
 ## Output format
 
-First output assumptions when needed, then the suggested path as a comment, then the full `.feature` file content. After the code block, ask: `Should I create and save this file at <features/path>/<kebab-case-name>.feature?` If this creates a new module folder, add: `I will also run npm run create:module -- <module-folder> to generate matching step definitions for this module.`
+First output assumptions when needed, then the suggested path as a comment, then the full `.feature` file content. After the code block, call `vscode_askQuestions` with a single question: header `"Save file"`, question text `Should I create and save this file at <features/path>/<kebab-case-name>.feature?` (append the create:module note to the question text if a new module folder is created), and options `Yes` (recommended) and `No`.
 
 ```gherkin
 # Suggested path: features/<optional-module-folder>/<kebab-case-name>.feature
