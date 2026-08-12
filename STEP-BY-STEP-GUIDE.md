@@ -124,7 +124,7 @@ Example:
 npm run create:module -- orders
 ```
 
-This creates `features/step_definitions/orders.steps.js` with one stub per step used in `features/orders/*.feature`. Open that file and replace the `TODO` / `'pending'` bodies with real automation code. It is safe to re-run the command later — it only adds new steps, it never overwrites what you already wrote.
+This creates `features/~step_definitions/orders.steps.js` with one stub per step used in `features/orders/*.feature`. Open that file and replace the `TODO` / `'pending'` bodies with real automation code. It is safe to re-run the command later — it only adds new steps, it never overwrites what you already wrote.
 
 ## 9. Run the scenarios
 

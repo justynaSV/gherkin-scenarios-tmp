@@ -23,7 +23,7 @@ if (!moduleName) {
 }
 
 const featuresDir = path.join(process.cwd(), 'features', moduleName);
-const stepDefinitionsDir = path.join(process.cwd(), 'features', 'step_definitions');
+const stepDefinitionsDir = path.join(process.cwd(), 'features', '~step_definitions');
 const stepDefinitionPath = path.join(stepDefinitionsDir, `${moduleName}.steps.js`);
 
 const STEP_KEYWORD_PATTERN = /^\s*(Given|When|Then|And|But)\s+(.+?)\s*$/;
@@ -138,7 +138,7 @@ const { Given, When, Then, world } = require('@cucumber/cucumber');
 
     fs.writeFileSync(stepDefinitionPath, content);
     console.log(`Module folder ready: features/${moduleName}`);
-    console.log(`Step definitions ready: features/step_definitions/${moduleName}.steps.js (no feature steps found yet)`);
+    console.log(`Step definitions ready: features/~step_definitions/${moduleName}.steps.js (no feature steps found yet)`);
   } else {
     const stepFunctions = Array.from(uniqueSteps.entries())
       .map(([expression, { keyword, example }]) => buildStepFunction({ keyword, expression, example }))
@@ -152,7 +152,7 @@ ${stepFunctions}
 
     fs.writeFileSync(stepDefinitionPath, content);
     console.log(`Module folder ready: features/${moduleName}`);
-    console.log(`Step definitions ready: features/step_definitions/${moduleName}.steps.js (${uniqueSteps.size} step(s) generated from feature files)`);
+    console.log(`Step definitions ready: features/~step_definitions/${moduleName}.steps.js (${uniqueSteps.size} step(s) generated from feature files)`);
   }
 } else {
   const existingContent = fs.readFileSync(stepDefinitionPath, 'utf8');
@@ -171,6 +171,6 @@ ${stepFunctions}
 
     fs.writeFileSync(stepDefinitionPath, updatedContent);
     console.log(`Module folder ready: features/${moduleName}`);
-    console.log(`Step definitions updated: features/step_definitions/${moduleName}.steps.js (${missingSteps.length} new step(s) appended)`);
+    console.log(`Step definitions updated: features/~step_definitions/${moduleName}.steps.js (${missingSteps.length} new step(s) appended)`);
   }
 }

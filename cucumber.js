@@ -1,7 +1,7 @@
 module.exports = {
   default: {
     paths: ['features/**/*.feature'],
-    require: ['features/support/**/*.js', 'features/step_definitions/**/*.js'],
+    require: ['features/~support/**/*.js', 'features/~step_definitions/**/*.js'],
     format: [
       'progress',
       'summary',
@@ -16,21 +16,21 @@ module.exports = {
   },
   dry: {
     paths: ['features/**/*.feature'],
-    require: ['features/support/**/*.js', 'features/step_definitions/**/*.js'],
+    require: ['features/~support/**/*.js', 'features/~step_definitions/**/*.js'],
     dryRun: true,
     format: ['summary'],
     publishQuiet: true
   },
   smoke: {
     paths: ['features/**/*.feature'],
-    require: ['features/support/**/*.js', 'features/step_definitions/**/*.js'],
+    require: ['features/~support/**/*.js', 'features/~step_definitions/**/*.js'],
     tags: '@smoke',
     format: ['progress', 'summary'],
     publishQuiet: true
   },
   regression: {
     paths: ['features/**/*.feature'],
-    require: ['features/support/**/*.js', 'features/step_definitions/**/*.js'],
+    require: ['features/~support/**/*.js', 'features/~step_definitions/**/*.js'],
     tags: '@regression',
     format: ['progress', 'summary'],
     publishQuiet: true

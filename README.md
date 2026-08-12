@@ -27,7 +27,7 @@ That guide walks through the full process:
 - A guided workflow document in `docs/getting-started.md`.
 - User story and feature templates in `templates/`.
 - JavaScript and TypeScript step definition templates in `templates/step-definitions/`.
-- Minimal Cucumber.js support files under `features/support/`.
+- Minimal Cucumber.js support files under `features/~support/`.
 - Empty starter folders for project feature files and step definitions.
 - Built-in Gherkin style validation, language validation, duplicate-step detection, and traceability checks.
 - A traceability matrix template in `docs/traceability.md`.
@@ -50,8 +50,8 @@ docs/
   traceability.md
 
 features/
-  step_definitions/
-  support/
+  ~step_definitions/
+  ~support/
 
 templates/
   feature.template
@@ -79,7 +79,7 @@ Short version:
 4. Add project-specific rules to the prompt.
 5. Update `.env.example` with safe placeholder URLs for the project.
 6. Add feature files under `features/`.
-7. For every new module folder under `features/`, create a matching step-definition file under `features/step_definitions/`.
+7. For every new module folder under `features/`, create a matching step-definition file under `features/~step_definitions/`.
 8. Keep `docs/traceability.md` updated whenever scenarios are added, renamed, or removed.
 
 ## Use The Copilot Prompt
@@ -104,7 +104,7 @@ features/orders/order-cancellation.feature
 features/calendar/appointment-rescheduling.feature
 ```
 
-Each first-level folder under `features/` is treated as a separate module. When the prompt creates a new module folder such as `features/orders/`, it also runs `npm run create:module -- orders` to generate `features/step_definitions/orders.steps.js`.
+Each first-level folder under `features/` is treated as a separate module. When the prompt creates a new module folder such as `features/orders/`, it also runs `npm run create:module -- orders` to generate `features/~step_definitions/orders.steps.js`.
 
 You can create the module folder and matching step-definition scaffold manually with:
 
@@ -112,7 +112,7 @@ You can create the module folder and matching step-definition scaffold manually 
 npm run create:module -- orders
 ```
 
-This parses every `.feature` file already in `features/orders/` and generates stub functions in `features/step_definitions/orders.steps.js` using the real Gherkin step text as the Cucumber Expression (not generic placeholders). Steps that already exist in the file are left untouched; only missing ones are appended, so re-running it after editing a feature is safe.
+This parses every `.feature` file already in `features/orders/` and generates stub functions in `features/~step_definitions/orders.steps.js` using the real Gherkin step text as the Cucumber Expression (not generic placeholders). Steps that already exist in the file are left untouched; only missing ones are appended, so re-running it after editing a feature is safe.
 
 ## Recommended User Story Format
 
@@ -179,15 +179,15 @@ The template validates successfully with no feature files. Once a project adds s
 Feature files can start as reviewable BDD documentation. When the project is ready to automate them, add step definitions under:
 
 ```text
-features/step_definitions/
+features/~step_definitions/
 ```
 
 Use the templates in `templates/step-definitions/` as a starting point. The detailed workflow is in `docs/getting-started.md`.
 
 Module convention:
 
-- `features/orders/` -> `features/step_definitions/orders.steps.js`
-- `features/password-reset/` -> `features/step_definitions/password-reset.steps.js`
+- `features/orders/` -> `features/~step_definitions/orders.steps.js`
+- `features/password-reset/` -> `features/~step_definitions/password-reset.steps.js`
 
 ## Running BDD Scenarios
 

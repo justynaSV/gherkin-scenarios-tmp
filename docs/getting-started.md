@@ -165,7 +165,7 @@ Each first-level folder under `features/` is treated as a separate module. After
 npm run create:module -- orders
 ```
 
-This creates `features/orders/` (if it does not exist yet) and generates `features/step_definitions/orders.steps.js` with one stub per **unique step actually used in that module's feature files** (converted to a Cucumber Expression, e.g. `{string}`/`{int}` placeholders) — not generic placeholder text. Re-run the same command after editing a feature file; it only appends the steps that are still missing, so it never overwrites work you've already implemented.
+This creates `features/orders/` (if it does not exist yet) and generates `features/~step_definitions/orders.steps.js` with one stub per **unique step actually used in that module's feature files** (converted to a Cucumber Expression, e.g. `{string}`/`{int}` placeholders) — not generic placeholder text. Re-run the same command after editing a feature file; it only appends the steps that are still missing, so it never overwrites work you've already implemented.
 
 The Copilot prompt is configured to run `npm run create:module -- <module-folder>` automatically after saving a feature file in a new module folder.
 
@@ -194,15 +194,15 @@ Step definitions connect Gherkin text to executable JavaScript or TypeScript cod
 Create step definition files under:
 
 ```text
-features/step_definitions/
+features/~step_definitions/
 ```
 
 Use the module name in the file name:
 
 ```text
-features/step_definitions/login.steps.js
-features/step_definitions/orders.steps.js
-features/step_definitions/permissions.steps.js
+features/~step_definitions/login.steps.js
+features/~step_definitions/orders.steps.js
+features/~step_definitions/permissions.steps.js
 ```
 
 Start from the templates in `templates/step-definitions/` when useful.
@@ -218,7 +218,7 @@ Scenario: Successful login with valid credentials
   Then the dashboard is displayed
 ```
 
-Create `features/step_definitions/login.steps.js`:
+Create `features/~step_definitions/login.steps.js`:
 
 ```js
 const assert = require('assert/strict');
@@ -240,11 +240,11 @@ Then('the dashboard is displayed', async () => {
 });
 ```
 
-The `world` object is shared state for the scenario. Add project-specific drivers, test users, API clients, or page objects to `features/support/world.js`.
+The `world` object is shared state for the scenario. Add project-specific drivers, test users, API clients, or page objects to `features/~support/world.js`.
 
 ## 9. Add project support code
 
-The clean template includes a minimal Cucumber World in `features/support/world.js`. For executable tests, extend it with project-specific helpers.
+The clean template includes a minimal Cucumber World in `features/~support/world.js`. For executable tests, extend it with project-specific helpers.
 
 Common additions include:
 
@@ -264,7 +264,7 @@ After adding feature files, run a dry run:
 npm run bdd:dry-run
 ```
 
-If Cucumber reports undefined steps, run `npm run create:module -- <module-folder>` to generate stubs for them, then implement the `TODO` bodies (they return `'pending'` until you do) in `features/step_definitions/`.
+If Cucumber reports undefined steps, run `npm run create:module -- <module-folder>` to generate stubs for them, then implement the `TODO` bodies (they return `'pending'` until you do) in `features/~step_definitions/`.
 
 ## 11. Run scenarios
 

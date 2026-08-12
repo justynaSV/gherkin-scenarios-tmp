@@ -72,7 +72,7 @@ If any of these sections are missing, unclear, or too thin to generate useful sc
   - Suggest a target path under `features/`, not only a file name.
   - If the user names an existing module folder, use it, for example `features/<module-folder>/<kebab-case-name>.feature`.
   - If the user asks for a new module folder, treat that folder as a separate feature module. Suggest the new folder under `features/` and create it only after save confirmation.
-  - After saving a new or updated `.feature` file inside a module folder, run `npm run create:module -- <module-folder>` to generate/update the matching step-definition file at `features/step_definitions/<module-folder>.steps.js`.
+  - After saving a new or updated `.feature` file inside a module folder, run `npm run create:module -- <module-folder>` to generate/update the matching step-definition file at `features/~step_definitions/<module-folder>.steps.js`.
   - That script parses the module's `.feature` files and generates one step stub per unique step (using the real Gherkin step text as a Cucumber Expression), instead of generic placeholder steps. It only appends steps that are still missing, so it is safe to re-run after every change.
   - If no target folder is provided, ask where to save the feature before creating the file. Offer `features/`, any clearly relevant existing subfolder, and an option to provide a new folder name.
 9. **File naming**: Suggest a file name in `kebab-case.feature` format at the top of your response.
