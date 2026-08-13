@@ -137,6 +137,17 @@ Acceptance criteria
 
 If some information is missing, the prompt should ask follow-up questions before generating scenarios.
 
+### Optional: use a Jira link instead of pasting the story
+
+Instead of pasting the story text, you can give Copilot a Jira issue link (e.g. `https://<site>.atlassian.net/browse/PROJ-123`) or bare key (`PROJ-123`) in step 6. One-time setup per machine:
+
+1. Open the Command Palette (`Ctrl+Shift+P`) and run **MCP: Add Server**.
+2. Choose **HTTP**, enter name `atlassian` and URL `https://mcp.atlassian.com/v1/mcp`, then pick the **Global** scope so it's available in every repo, not just this one.
+3. Run **MCP: List Servers**, select `atlassian`, and choose **Start Server** — this opens a browser window to log in with your Atlassian/Jira Cloud account. Complete the login once.
+4. From then on, pasting a Jira link or key into `/gherkin-scenarios` fetches the summary, description, acceptance criteria, and sub-tasks automatically.
+
+If you skip this setup, just paste the story text as shown above.
+
 ## 6. Generate a feature file with Copilot
 
 1. Open Copilot Chat.

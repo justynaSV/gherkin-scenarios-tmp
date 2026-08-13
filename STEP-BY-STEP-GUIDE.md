@@ -65,6 +65,17 @@ Out of scope:
 
 You can also start from the file `templates/user-story-paste.template.txt` and fill in the blanks.
 
+### Optional: use a Jira link instead of pasting the story
+
+If your story lives in Jira, you can give Copilot the issue link (e.g. `https://<site>.atlassian.net/browse/PROJ-123`) or bare key (`PROJ-123`) in step 5 instead of pasting the text. One-time setup per machine:
+
+1. Open the Command Palette (`Ctrl+Shift+P`) and run **MCP: Add Server**.
+2. Choose **HTTP**, enter name `atlassian` and URL `https://mcp.atlassian.com/v1/mcp`, then pick the **Global** scope so it's available in every repo, not just this one.
+3. Run **MCP: List Servers**, select `atlassian`, and choose **Start Server** — this opens a browser window to log in with your Atlassian/Jira Cloud account. Complete the login once.
+4. From then on, pasting a Jira link or key into `/gherkin-scenarios` fetches the summary, description, acceptance criteria, and sub-tasks automatically.
+
+If you skip this setup, just paste the story text as shown above.
+
 ## 5. Generate the feature file with Copilot
 
 1. Open **Copilot Chat** in VS Code (the chat icon in the sidebar, or `Ctrl+Alt+I`).
