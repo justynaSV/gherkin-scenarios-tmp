@@ -187,7 +187,7 @@ The Copilot prompt is configured to run `npm run create:module -- <module-folder
 The generator reads, per feature file:
 
 - **Story ID** — the first ticket-shaped reference (e.g. `PROJ-123`) in a comment above the `Feature:` line.
-- **Acceptance criterion** — `# AC:` / `# AC1:` / `# Acceptance criterion:` comments above each scenario.
+- **Acceptance criterion** — `# AC:` / `# AC1:` comments above each scenario.
 - **Tags** — feature-level and scenario-level tags combined.
 
 Regenerate it after adding, renaming, moving, or removing a scenario:
