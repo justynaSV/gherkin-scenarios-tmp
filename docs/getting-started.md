@@ -97,7 +97,7 @@ Before writing the first real scenarios, update the project-specific basics:
 2. Update `.env.example` with safe placeholder URLs for the application under test.
 3. Add project-specific rules to `.github/prompts/gherkin-scenarios.prompt.md`.
 4. Update `docs/tags.md` if the project needs domain-specific tags.
-5. Keep `docs/traceability.md` as the central scenario mapping table.
+5. Leave `docs/traceability.md` alone — it is generated from the feature files by `npm run trace:generate`, not edited by hand.
 
 Good project-specific prompt rules include:
 
@@ -182,21 +182,21 @@ The Copilot prompt is configured to run `npm run create:module -- <module-folder
 
 ## 7. Update traceability
 
-Every scenario should be mapped in `docs/traceability.md`.
+`docs/traceability.md` is generated from the `.feature` files — never edit the table by hand. It maps every scenario to its story ID, acceptance criteria, feature file, and tags.
 
-Use one row per scenario:
+The generator reads, per feature file:
 
-```md
-| Story ID | Acceptance criterion | Feature file | Scenario name | Tags |
-| --- | --- | --- | --- | --- |
-| LOGIN-001 | Registered user can sign in | `features/login/login.feature` | Successful login with valid credentials | `@smoke @regression @ui` |
-```
+- **Story ID** — the first ticket-shaped reference (e.g. `PROJ-123`) in a comment above the `Feature:` line.
+- **Acceptance criterion** — `# AC:` / `# AC1:` / `# Acceptance criterion:` comments above each scenario.
+- **Tags** — feature-level and scenario-level tags combined.
 
-Run validation after updating the table:
+Regenerate it after adding, renaming, moving, or removing a scenario:
 
 ```sh
-npm run validate
+npm run trace:generate
 ```
+
+`npm run validate` fails if `docs/traceability.md` is stale, so regenerate and commit it alongside the feature change. The Copilot prompt is configured to run `npm run trace:generate` automatically after saving a feature file.
 
 ## 8. Create step definitions
 
@@ -314,7 +314,7 @@ Open a pull request for review. The CI workflow validates feature files and trac
 1. Create or update the user story.
 2. Generate the feature file with Copilot.
 3. Review scenarios with QA, product, and developers.
-4. Update traceability.
+4. Regenerate traceability with `npm run trace:generate`.
 5. Run `npm run validate`.
 6. Add step definitions when automation is needed.
 7. Run `npm install` and `npm run bdd:dry-run`.

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const { walkFeatureFiles, toRelativePath } = require('./lib/feature-files');
 
-const featuresDir = path.join(process.cwd(), 'features');
 const restrictedTags = new Set(['@wip', '@only', '@ignore']);
 const maxLengths = {
   Feature: 90,
@@ -9,23 +9,6 @@ const maxLengths = {
   Step: 120
 };
 
-const walk = (directory) => {
-  if (!fs.existsSync(directory)) {
-    return [];
-  }
-
-  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    const fullPath = path.join(directory, entry.name);
-
-    if (entry.isDirectory()) {
-      return walk(fullPath);
-    }
-
-    return entry.isFile() && entry.name.endsWith('.feature') ? [fullPath] : [];
-  });
-};
-
-const toRelativePath = (filePath) => path.relative(process.cwd(), filePath).split(path.sep).join('/');
 const isKebabCase = (name) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name);
 const isTagLine = (line) => /^\s*@\S+/.test(line);
 const isCommentedTagLine = (line) => /^\s*#\s*@\S+/.test(line);
@@ -65,12 +48,15 @@ const expectedIndent = (line) => {
   return null;
 };
 
-const validateFeatureFile = (filePath, allFeatureNames, allScenarioNames) => {
+const validateFeatureFile = (filePath, allFeatureNames) => {
   const relativePath = toRelativePath(filePath);
   const content = fs.readFileSync(filePath, 'utf8');
   const lines = content.split(/\r?\n/);
   const errors = [];
   const featureName = path.basename(filePath, '.feature');
+  // Scenario names only need to be unique within their own file - reusing a title across
+  // different feature files (e.g. the same generic assertion for different icons) is fine.
+  const scenarioNamesInFile = new Set();
 
   if (!isKebabCase(featureName)) {
     errors.push(`${relativePath}: file name should be kebab-case.`);
@@ -184,11 +170,11 @@ const validateFeatureFile = (filePath, allFeatureNames, allScenarioNames) => {
         errors.push(`${relativePath}:${lineNumber}: Scenario name should be ${maxLengths.Scenario} characters or less.`);
       }
 
-      if (allScenarioNames.has(scenarioTitle)) {
+      if (scenarioNamesInFile.has(scenarioTitle)) {
         errors.push(`${relativePath}:${lineNumber}: duplicate Scenario name: ${scenarioTitle}`);
       }
 
-      allScenarioNames.add(scenarioTitle);
+      scenarioNamesInFile.add(scenarioTitle);
       currentScenarioTags = pendingTags;
       pendingTags = [];
       currentScenario = {
@@ -229,21 +215,30 @@ const validateFeatureFile = (filePath, allFeatureNames, allScenarioNames) => {
   return errors;
 };
 
-const featureFiles = walk(featuresDir);
+const runCheck = () => {
+  const featureFiles = walkFeatureFiles();
 
-if (featureFiles.length === 0) {
-  console.log('No feature files found. Skipping Gherkin style validation.');
-  process.exit(0);
+  if (featureFiles.length === 0) {
+    return {
+      label: 'Gherkin style validation',
+      skippedMessage: 'No feature files found. Skipping Gherkin style validation.'
+    };
+  }
+
+  const allFeatureNames = new Set();
+  const errors = featureFiles.flatMap((filePath) => validateFeatureFile(filePath, allFeatureNames));
+
+  return {
+    label: 'Gherkin style validation',
+    failHeader: 'Gherkin style validation failed:',
+    errorLines: errors.map((error) => `- ${error}`),
+    passMessage: 'Gherkin style validation passed.'
+  };
+};
+
+module.exports = { runCheck };
+
+if (require.main === module) {
+  const { reportResult } = require('./lib/report');
+  process.exit(reportResult(runCheck()) ? 0 : 1);
 }
-
-const allFeatureNames = new Set();
-const allScenarioNames = new Set();
-const errors = featureFiles.flatMap((filePath) => validateFeatureFile(filePath, allFeatureNames, allScenarioNames));
-
-if (errors.length > 0) {
-  console.error('Gherkin style validation failed:');
-  errors.forEach((error) => console.error(`- ${error}`));
-  process.exit(1);
-}
-
-console.log('Gherkin style validation passed.');

@@ -13,11 +13,12 @@
     "bdd:regression": "cucumber-js --profile regression",
     "bdd:smoke": "cucumber-js --profile smoke",
     "create:module": "node scripts/create-module.js",
-    "lint": "npm run lint:gherkin && npm run lint:language && npm run lint:steps && npm run lint:traceability",
+    "lint": "node scripts/lint.js",
     "lint:gherkin": "node scripts/check-gherkin-style.js",
     "lint:language": "node scripts/check-feature-language.js",
     "lint:steps": "node scripts/check-duplicate-steps.js",
     "lint:traceability": "node scripts/check-traceability.js",
+    "trace:generate": "node scripts/generate-traceability.js",
     "validate": "npm run lint"
   },
   "devDependencies": {

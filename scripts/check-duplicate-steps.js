@@ -1,34 +1,7 @@
 const fs = require('fs');
-const path = require('path');
+const { walkFeatureFiles, toRelativePath } = require('./lib/feature-files');
 
-const featuresDir = path.join(process.cwd(), 'features');
 const stepPattern = /^\s*(Given|When|Then|And|But)\s+(.+)\s*$/;
-/** @type {{ scenario: string | null, step: string, first: string | undefined, duplicate: string }[]} */
-const duplicates = [];
-/** @type {string | null} */
-let currentScenario = null;
-/** @type {Map<string, string>} */
-let scenarioSteps = new Map();
-
-/**
- * @param {string} directory
- * @returns {string[]}
- */
-const walk = (directory) => {
-  if (!fs.existsSync(directory)) {
-    return [];
-  }
-
-  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    const fullPath = path.join(directory, entry.name);
-
-    if (entry.isDirectory()) {
-      return walk(fullPath);
-    }
-
-    return entry.isFile() && entry.name.endsWith('.feature') ? [fullPath] : [];
-  });
-};
 
 /**
  * @param {string} text
@@ -44,51 +17,66 @@ const normalizeStep = (text) => {
     .toLowerCase();
 };
 
-for (const filePath of walk(featuresDir)) {
-  const relativePath = path.relative(process.cwd(), filePath);
-  const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
+const runCheck = () => {
+  /** @type {{ scenario: string | null, step: string, first: string | undefined, duplicate: string }[]} */
+  const duplicates = [];
+  /** @type {string | null} */
+  let currentScenario = null;
+  /** @type {Map<string, string>} */
+  let scenarioSteps = new Map();
 
-  lines.forEach((line, index) => {
-    const scenarioMatch = line.match(/^\s*Scenario(?: Outline)?:\s+(.+)\s*$/);
+  for (const filePath of walkFeatureFiles()) {
+    const relativePath = toRelativePath(filePath);
+    const lines = fs.readFileSync(filePath, 'utf8').split(/\r?\n/);
 
-    if (scenarioMatch) {
-      currentScenario = scenarioMatch[1].trim();
-      scenarioSteps = new Map();
-      return;
-    }
+    lines.forEach((line, index) => {
+      const scenarioMatch = line.match(/^\s*Scenario(?: Outline)?:\s+(.+)\s*$/);
 
-    const match = line.match(stepPattern);
+      if (scenarioMatch) {
+        currentScenario = scenarioMatch[1].trim();
+        scenarioSteps = new Map();
+        return;
+      }
 
-    if (!match) {
-      return;
-    }
+      const match = line.match(stepPattern);
 
-    const normalized = normalizeStep(match[2]);
-    const location = `${relativePath}:${index + 1}`;
+      if (!match) {
+        return;
+      }
 
-    if (scenarioSteps.has(normalized)) {
-      duplicates.push({
-        scenario: currentScenario,
-        step: match[2].trim(),
-        first: scenarioSteps.get(normalized),
-        duplicate: location
-      });
-      return;
-    }
+      const normalized = normalizeStep(match[2]);
+      const location = `${relativePath}:${index + 1}`;
 
-    scenarioSteps.set(normalized, location);
-  });
+      if (scenarioSteps.has(normalized)) {
+        duplicates.push({
+          scenario: currentScenario,
+          step: match[2].trim(),
+          first: scenarioSteps.get(normalized),
+          duplicate: location
+        });
+        return;
+      }
+
+      scenarioSteps.set(normalized, location);
+    });
+  }
+
+  return {
+    label: 'Duplicate step check',
+    failHeader: 'Duplicate Gherkin steps found inside the same scenario:',
+    errorLines: duplicates.flatMap(({ scenario, step, first, duplicate }) => [
+      `- Scenario: ${scenario || '<unknown>'}`,
+      `- ${step}`,
+      `  first: ${first}`,
+      `  duplicate: ${duplicate}`
+    ]),
+    passMessage: 'No duplicate Gherkin steps found.'
+  };
+};
+
+module.exports = { runCheck };
+
+if (require.main === module) {
+  const { reportResult } = require('./lib/report');
+  process.exit(reportResult(runCheck()) ? 0 : 1);
 }
-
-if (duplicates.length > 0) {
-  console.error('Duplicate Gherkin steps found inside the same scenario:');
-  duplicates.forEach(({ scenario, step, first, duplicate }) => {
-    console.error(`- Scenario: ${scenario || '<unknown>'}`);
-    console.error(`- ${step}`);
-    console.error(`  first: ${first}`);
-    console.error(`  duplicate: ${duplicate}`);
-  });
-  process.exit(1);
-}
-
-console.log('No duplicate Gherkin steps found.');
