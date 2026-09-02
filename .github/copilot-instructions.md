@@ -4,9 +4,8 @@
   workspace — ignore this bullet entirely if this repo is checked out on its own, which is the normal case for
   end users): this repo is one of 4 near-identical siblings — `gherkin-scenarios` (template),
   `gherkin-scenarios-playground`, `gherkin-scenarios-SVC-Blacharis`, `gherkin-scenarios-tmp`. Workflow/tooling
-  changes (`.github/prompts/gherkin-scenarios.prompt.md`, `.claude/commands/gherkin-scenarios.md`, `CLAUDE.md`,
-  `scripts/`, `docs/`, `cucumber.js`, `.vscode/settings.json`, `package.json` scripts, README/STEP-BY-STEP-GUIDE)
-  should be mirrored across all 4 unless a change is explicitly
+  changes (`.github/prompts/gherkin-scenarios.prompt.md`, `scripts/`, `docs/`, `cucumber.js`, `.vscode/settings.json`,
+  `package.json` scripts, README/STEP-BY-STEP-GUIDE) should be mirrored across all 4 unless a change is explicitly
   repo-specific (e.g. actual `.feature` content, module folders). Do not reference or try to access sibling repos
   when they aren't present in the current workspace.
 - Step definitions and hooks live in `features/~step_definitions/` and `features/~support/` — the leading `~` makes
