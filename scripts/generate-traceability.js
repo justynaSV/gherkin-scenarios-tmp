@@ -5,7 +5,7 @@ const { walkFeatureFiles, toRelativePath } = require('./lib/feature-files');
 const traceabilityPath = path.join(process.cwd(), 'docs', 'traceability.md');
 
 const STORY_ID_PATTERN = /\b([A-Z][A-Z0-9]+-\d+)\b/;
-const AC_COMMENT_PATTERN = /^\s*#\s*AC\s*(\d+)?\s*:?\s*(.*)$/i;
+const AC_COMMENT_PATTERN = /^\s*#\s*(AC\s*\d*(?:\s*[,/]\s*AC\s*\d*)*)\b\s*(.*)$/i;
 const TAG_LINE_PATTERN = /^\s*(@\S+(?:\s+@\S+)*)\s*$/;
 const SCENARIO_PATTERN = /^\s*(Scenario(?: Outline)?):\s+(.+?)\s*$/;
 const FEATURE_LINE_PATTERN = /^\s*Feature:/;
